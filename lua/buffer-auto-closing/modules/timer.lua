@@ -18,7 +18,7 @@ M.get_open_buffers = function(opts)
 end
 
 
-M.start = function(opts)
+M.init = function(opts)
   local timer = vim.loop.new_timer()
   local interval = opts.retirement_mins * 60 * 1000
   local open_buffers = M.get_open_buffers(opts)

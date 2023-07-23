@@ -1,60 +1,55 @@
 local timer_module = require("buffer_auto_closing.modules.timer")
+local autocmd_module = require("buffer_auto_closing.modules.autocmd")
 
-local M = {}
+local Plugin = {}
 
-M.DEFAULT_OPTS = {
+Plugin.DEFAULT_OPTS = {
   min_bufs = 1,
   retirement_mins = 5,
-  apply_each_buffer = false, -- TODO: implement this
+  apply_each_buffer = false,
   excluded = {
-    filetypes = { "lazy" },
+    filetypes = { "lazy", "NvimTree" },
     buftypes = { "terminal" },
-    bufnames = { "NvimTree" },
+    bufnames = {},
   },
   ignore_unsaved = true,
   ignore_visible = true,
 }
 
-M.validate_opts = function(opts)
-  vim.validate {
-    opts = { opts, "table" }
-  }
-
-  vim.validate {
+Plugin.validate_opts = function(opts)
+  local validation_result = vim.validate {
+    opts = { opts, "table" },
     min_bufs = { opts.min_bufs, "number" },
     retirement_mins = { opts.retirement_mins, "number" },
     apply_each_buffer = { opts.apply_each_buffer, "boolean" },
     ignore_unsaved = { opts.ignore_unsaved, "boolean" },
     ignore_visible = { opts.ignore_visible, "boolean" },
     excluded = { opts.excluded, "table" },
-  }
-
-  vim.validate {
     ["excluded.filetypes"] = { opts.excluded.filetypes, "table" },
     ["excluded.buftypes"] = { opts.excluded.buftypes, "table" },
     ["excluded.bufnames"] = { opts.excluded.bufnames, "table" },
   }
 
-  if vim.tbl_count(vim.validate.result) > 0 then
-    return {}
+  if next(validation_result) then
+    print(table.concat(validation_result, "\n"))
+    return nil
   end
 
   return opts
 end
 
+Plugin.apply_user_options = function(user_opts)
+  user_opts = Plugin.validate_opts(user_opts)
 
+  return vim.tbl_deep_extend("force", Plugin.DEFAULT_OPTS, user_opts or {})
+end
 
 --------------------------------------------------------------------------------
-M.apply_options = function(user_opts)
-  user_opts = M.validate_opts(user_opts)
+function Plugin.setup(user_opts)
+  local options = Plugin.apply_user_options(user_opts)
 
-  return vim.tbl_deep_extend("force", M.DEFAULT_OPTS, user_opts or {})
+  autocmd_module.init(options)
+  timer_module.init(options)
 end
 
-function M.setup(user_opts)
-  local options = M.apply_options(user_opts)
-
-  timer_module.start(options)
-end
-
-return M
+return Plugin
