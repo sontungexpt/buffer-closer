@@ -16,10 +16,10 @@ local Plugin = {}
 -- @field checking_interval_minutes The interval, in minutes, at which to check for retired buffers.
 --
 -- @field run_when_min_buffers_reached A table of options for running the buffer-closer when the number of buffers is
--- greater than the given number.
+-- greater than the given number.(not implemented yet)
 -- @field run_when_min_buffers_reached.enabled Whether to run the buffer-closer when the number of buffers is greater
--- than the given number.
--- @field run_when_min_buffers_reached.min_buffers The number of buffers to reach before running the buffer-closer.
+-- than the given number.(not implemented yet)
+-- @field run_when_min_buffers_reached.min_buffers The number of buffers to reach before running the buffer-closer.(not implemented yet)
 --
 -- @field excluded A table of excluded filetypes, buffer types, and filenames.
 -- @field excluded.filetypes A table of excluded filetypes.
@@ -27,25 +27,25 @@ local Plugin = {}
 -- @field excluded.filenames A table of excluded filenames.
 -- @field ignore_working_windows Whether to ignore buffers open in windows.
 local DEFAULT_OPTIONS = {
-	min_remaining_buffers = 1, -- can not be less than 1
-	retirement_minutes = 1, -- can not be less than 1
-	checking_interval_minutes = 1, -- can not be less than 1
+  min_remaining_buffers = 2,    -- can not be less than 1
+  retirement_minutes = 3,       -- can not be less than 1
+  checking_interval_minutes = 1, -- can not be less than 1
 
-	-- TODO: implement this
-	-- this option will be used to run the buffer-closer when the number of buffers is greater than the given number
-	run_when_min_buffers_reached = {
-		enabled = false,
-		min_buffers = 3, -- can not be less than 1
-	},
+  -- TODO: implement this
+  -- this option will be used to run the buffer-closer when the number of buffers is greater than the given number
+  run_when_min_buffers_reached = {
+    enabled = false,
+    min_buffers = 3, -- can not be less than 1
+  },
 
-	excluded = {
-		filetypes = { "lazy", "NvimTree" },
-		buftypes = { "terminal", "nofile", "quickfix", "prompt", "help" },
-		filenames = {},
-	},
+  excluded = {
+    filetypes = { "lazy", "NvimTree" },
+    buftypes = { "terminal", "nofile", "quickfix", "prompt", "help" },
+    filenames = {},
+  },
 
-	-- it means that a buffer will not be closed if it is opened in a window
-	ignore_working_windows = true,
+  -- it means that a buffer will not be closed if it is opened in a window
+  ignore_working_windows = true,
 }
 
 ---
@@ -58,61 +58,61 @@ local DEFAULT_OPTIONS = {
 -- @return table: The validated options table if the options are valid, otherwise nil.
 --
 Plugin.validate_opts = function(opts)
-	local success, error_msg = pcall(function()
-		vim.validate { opts = { opts, "table", true } }
+  local success, error_msg = pcall(function()
+    vim.validate { opts = { opts, "table", true } }
 
-		if opts then
-			vim.validate {
-				min_remaining_buffers = {
-					opts.min_remaining_buffers,
-					function(val) return val == nil or type(val) == "number" and val > 0 end,
-					"Min remaining buffers can not be less than 1",
-				},
-				checking_interval_minutes = {
-					opts.checking_interval_minutes,
-					function(val) return val == nil or type(val) == "number" and val > 0 end,
-					"Checking interval minutes can not be less than 1",
-				},
-				retirement_minutes = {
-					opts.retirement_minutes,
-					function(val) return val == nil or type(val) == "number" and val > 0 end,
-					"Retirement minutes can not be less than 1",
-				},
-				run_when_min_buffers_reached = { opts.run_when_min_buffers_reached, "table", true },
-				excluded = { opts.excluded, "table", true },
-				ignore_working_windows = { opts.ignore_working_windows, "boolean", true },
-			}
+    if opts then
+      vim.validate {
+        min_remaining_buffers = {
+          opts.min_remaining_buffers,
+          function(val) return val == nil or type(val) == "number" and val > 0 end,
+          "Min remaining buffers can not be less than 1",
+        },
+        checking_interval_minutes = {
+          opts.checking_interval_minutes,
+          function(val) return val == nil or type(val) == "number" and val > 0 end,
+          "Checking interval minutes can not be less than 1",
+        },
+        retirement_minutes = {
+          opts.retirement_minutes,
+          function(val) return val == nil or type(val) == "number" and val > 0 end,
+          "Retirement minutes can not be less than 1",
+        },
+        run_when_min_buffers_reached = { opts.run_when_min_buffers_reached, "table", true },
+        excluded = { opts.excluded, "table", true },
+        ignore_working_windows = { opts.ignore_working_windows, "boolean", true },
+      }
 
-			if opts.run_when_min_buffers_reached then
-				vim.validate {
-					["run_when_min_buffers_reached.enabled"] = {
-						opts.run_when_min_buffers_reached.enabled,
-						"boolean",
-					},
-					["run_when_min_buffers_reached.min_buffers"] = {
-						opts.run_when_min_buffers_reached.min_buffers,
-						function(val) return val == nil or type(val) == "number" and val > 0 end,
-						"Min buffers can not be less than 1",
-					},
-				}
-			end
+      if opts.run_when_min_buffers_reached then
+        vim.validate {
+          ["run_when_min_buffers_reached.enabled"] = {
+            opts.run_when_min_buffers_reached.enabled,
+            "boolean",
+          },
+          ["run_when_min_buffers_reached.min_buffers"] = {
+            opts.run_when_min_buffers_reached.min_buffers,
+            function(val) return val == nil or type(val) == "number" and val > 0 end,
+            "Min buffers can not be less than 1",
+          },
+        }
+      end
 
-			if opts.excluded then
-				vim.validate {
-					["excluded.filetypes"] = { opts.excluded.filetypes, "table", true },
-					["excluded.buftypes"] = { opts.excluded.buftypes, "table", true },
-					["excluded.filenames"] = { opts.excluded.filenames, "table", true },
-				}
-			end
-		end
-	end)
+      if opts.excluded then
+        vim.validate {
+          ["excluded.filetypes"] = { opts.excluded.filetypes, "table", true },
+          ["excluded.buftypes"] = { opts.excluded.buftypes, "table", true },
+          ["excluded.filenames"] = { opts.excluded.filenames, "table", true },
+        }
+      end
+    end
+  end)
 
-	if not success then
-		error("Error: " .. error_msg)
-		return nil
-	end
+  if not success then
+    error("Error: " .. error_msg)
+    return nil
+  end
 
-	return opts
+  return opts
 end
 
 ---
@@ -127,8 +127,8 @@ end
 -- @see buffer-closer.DEFAULT_OPTIONS
 --
 Plugin.apply_user_options = function(user_opts)
-	user_opts = Plugin.validate_opts(user_opts)
-	return vim.tbl_deep_extend("force", DEFAULT_OPTIONS, user_opts or {})
+  user_opts = Plugin.validate_opts(user_opts)
+  return vim.tbl_deep_extend("force", DEFAULT_OPTIONS, user_opts or {})
 end
 
 ---
@@ -141,8 +141,8 @@ end
 --
 -- @see buffer-closer.modules.timer.init
 Plugin.setup = function(user_opts)
-	local options = Plugin.apply_user_options(user_opts)
-	timer_module.init(options)
+  local options = Plugin.apply_user_options(user_opts)
+  timer_module.init(options)
 end
 
 return Plugin

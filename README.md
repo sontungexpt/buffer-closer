@@ -2,12 +2,17 @@
 
 <!--toc:start-->
 
+- [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Credits](#credits)
 - [Similar Plugins](#similar-plugins)
 
 <!--toc:end-->
+
+## Features
+
+- Automatically close inactive buffers after a period of time in minutes
 
 ## Installation
 
@@ -25,8 +30,8 @@
 ```lua
 -- default values
 require("buffer-auto-closing").setup({
-  min_remaining_buffers = 2,      -- can not be less than 1
-  retirement_minutes = 1,        -- can not be less than 1
+  min_remaining_buffers = 2,    -- can not be less than 1
+  retirement_minutes = 3,       -- can not be less than 1
   checking_interval_minutes = 1, -- can not be less than 1
 
   excluded = {
