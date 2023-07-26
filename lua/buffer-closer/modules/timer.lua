@@ -19,7 +19,10 @@ local M = {}
 --
 M.init = function(opts)
 	local timer = vim.loop.new_timer()
-	local run_time_start = opts.retirement_minutes * 60000
+
+	-- why + 60000? because the timer starts after the specified retirement time
+	-- not at the specified retirement time
+	local run_time_start = opts.retirement_minutes * 60000 + 60000
 	local interval_time = opts.checking_interval_minutes * 60000
 
 	-- just start after interval time
