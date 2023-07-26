@@ -51,8 +51,8 @@ M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 -- This function checks whether the given buffer is outdated based on the given retirement policy. A buffer is considered
 -- outdated if it has not been used in the specified number of minutes.
 --
--- @param lastused_secs number The timestamp of when the buffer was last used, in seconds.
--- @param retirement_minutes number The number of minutes after which a buffer is considered outdated.
+-- @param lastused_secs (number): The timestamp of when the buffer was last used, in seconds.
+-- @param retirement_minutes (number): The number of minutes after which a buffer is considered outdated.
 -- @return boolean Whether the buffer is outdated.
 --
 M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
