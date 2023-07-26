@@ -1,4 +1,4 @@
-# buffer-auto-closing
+# buffer-closer
 
 <!--toc:start-->
 
@@ -19,7 +19,7 @@
 ```lua
 -- lazy.nvim
 {
-    'sontungexpt/buffer-auto-closing',
+    'sontungexpt/buffer-closer',
 	config = true,
 	event = "VeryLazy",
 },
@@ -29,7 +29,7 @@
 
 ```lua
 -- default values
-require("buffer-auto-closing").setup({
+require("buffer-closer").setup({
   min_remaining_buffers = 2,    -- can not be less than 1
   retirement_minutes = 3,       -- can not be less than 1
   checking_interval_minutes = 1, -- can not be less than 1

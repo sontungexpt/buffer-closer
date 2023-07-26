@@ -1,5 +1,9 @@
 title = "buffer-closer"
 project = "buffer-closer"
-description = [[
-This plugin automatically closes buffers that are retired after a certain amount of time.
-]]
+description = "Automatically close buffers that are retired after a certain amount of time."
+format='discount'
+dir='docs'
+readme='README.md'
+sort=true
+sort_modules=true
+style='./docs/'

@@ -43,6 +43,10 @@
   <li><strong>lua.buffer-closer.modules.buffer</strong></li>
   <li><a href="../modules/lua.buffer-closer.modules.timer.html">lua.buffer-closer.modules.timer</a></li>
 </ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
 
 </div>
 
@@ -50,24 +54,14 @@
 
 <h1>Module <code>lua.buffer-closer.modules.buffer</code></h1>
 <p>A module for managing buffers and closing retired buffers.</p>
-<p>
-<p> This module provides functions for managing buffers and closing retired buffers
-</p>
+<p> This module provides functions for managing buffers and closing retired buffers</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#is_excluded">is_excluded (bufnr, excluded)</a></td>
-	<td class="summary">Checks whether a buffer is excluded based on the given exclusion criteria.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#is_unsaved_buffer">is_unsaved_buffer (bufnr)</a></td>
-	<td class="summary">Checks whether a buffer is unsaved.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#is_outdated_buffer">is_outdated_buffer (lastused_secs, retirement_minutes)</a></td>
-	<td class="summary">Checks whether a buffer is outdated based on the given retirement policy.</td>
+	<td class="name" nowrap><a href="#close_retired_buffers">close_retired_buffers (opts)</a></td>
+	<td class="summary">Closes the retired buffers based on the retirement policy specified in the options.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#get_retired_bufnrs">get_retired_bufnrs (opts)</a></td>
@@ -75,8 +69,16 @@
  retirement policy specified in the options.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#close_retired_buffers">close_retired_buffers (opts)</a></td>
-	<td class="summary">Closes the retired buffers based on the retirement policy specified in the options.</td>
+	<td class="name" nowrap><a href="#is_excluded">is_excluded (bufnr, excluded)</a></td>
+	<td class="summary">Checks whether a buffer is excluded based on the given exclusion criteria.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is_outdated_buffer">is_outdated_buffer (lastused_secs, retirement_minutes)</a></td>
+	<td class="summary">Checks whether a buffer is outdated based on the given retirement policy.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is_unsaved_buffer">is_unsaved_buffer (bufnr)</a></td>
+	<td class="summary">Checks whether a buffer is unsaved.</td>
 	</tr>
 </table>
 
@@ -88,91 +90,30 @@
 
     <dl class="function">
     <dt>
-    <a name = "is_excluded"></a>
-    <strong>is_excluded (bufnr, excluded)</strong>
+    <a name = "close_retired_buffers"></a>
+    <strong>close_retired_buffers (opts)</strong>
     </dt>
     <dd>
-    Checks whether a buffer is excluded based on the given exclusion criteria.
-<p> This function checks whether the given buffer should be excluded from being closed based on the given exclusion
- criteria. The exclusion criteria include filetypes, buffer types, and filenames.
+    Closes the retired buffers based on the retirement policy specified in the options. </p>
 
+<p> This function closes the retired buffers based on the retirement policy specified in the options. Buffers that should
+ be excluded based on the exclusion criteria are not closed.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">bufnr</span>
-         (number): The buffer number to check.
-        </li>
-        <li><span class="parameter">excluded</span>
-         (table): The exclusion criteria.
+        <li><span class="parameter">opts</span>
+         (table): The retirement policy options.
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-        boolean: Whether the buffer should be excluded.
-    </ol>
 
 
-
-
-</dd>
-    <dt>
-    <a name = "is_unsaved_buffer"></a>
-    <strong>is_unsaved_buffer (bufnr)</strong>
-    </dt>
-    <dd>
-    Checks whether a buffer is unsaved.
-<p> This function checks whether the given buffer has unsaved changes.
-
-
-
-    <h3>Parameters:</h3>
+    <h3>See also:</h3>
     <ul>
-        <li><span class="parameter">bufnr</span>
-         (number): The buffer number to check.
-        </li>
+         <li><a href="../modules/lua.buffer-closer.modules.buffer.html#get_retired_bufnrs">get_retired_bufnrs</a></li>
+         <li><a href="../modules/lua.buffer-closer.html#setup">buffer-closer.setup</a></li>
     </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        boolean: Whether the buffer has unsaved changes.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "is_outdated_buffer"></a>
-    <strong>is_outdated_buffer (lastused_secs, retirement_minutes)</strong>
-    </dt>
-    <dd>
-    Checks whether a buffer is outdated based on the given retirement policy.
-<p> This function checks whether the given buffer is outdated based on the given retirement policy. A buffer is considered
- outdated if it has not been used in the specified number of minutes.
-
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">lastused_secs</span>
-         number The timestamp of when the buffer was last used, in seconds.
-        </li>
-        <li><span class="parameter">retirement_minutes</span>
-         number The number of minutes after which a buffer is considered outdated.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        boolean Whether the buffer is outdated.
-    </ol>
-
-
 
 
 </dd>
@@ -182,10 +123,10 @@
     </dt>
     <dd>
     Returns the list of buffer numbers that should be closed based on the
- retirement policy specified in the options.
+ retirement policy specified in the options. </p>
+
 <p> This function returns the list of buffer numbers that should be closed based on the retirement policy specified in the
  options. Buffers that should be excluded based on the exclusion criteria are not included in the returned list.
-
 
 
     <h3>Parameters:</h3>
@@ -210,30 +151,91 @@
 
 </dd>
     <dt>
-    <a name = "close_retired_buffers"></a>
-    <strong>close_retired_buffers (opts)</strong>
+    <a name = "is_excluded"></a>
+    <strong>is_excluded (bufnr, excluded)</strong>
     </dt>
     <dd>
-    Closes the retired buffers based on the retirement policy specified in the options.
-<p> This function closes the retired buffers based on the retirement policy specified in the options. Buffers that should
- be excluded based on the exclusion criteria are not closed.
+    Checks whether a buffer is excluded based on the given exclusion criteria. </p>
 
+<p> This function checks whether the given buffer should be excluded from being closed based on the given exclusion
+ criteria. The exclusion criteria include filetypes, buffer types, and filenames.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">opts</span>
-         (table): The retirement policy options.
+        <li><span class="parameter">bufnr</span>
+         (number): The buffer number to check.
+        </li>
+        <li><span class="parameter">excluded</span>
+         (table): The exclusion criteria.
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean: Whether the buffer should be excluded.
+    </ol>
 
 
-    <h3>See also:</h3>
+
+
+</dd>
+    <dt>
+    <a name = "is_outdated_buffer"></a>
+    <strong>is_outdated_buffer (lastused_secs, retirement_minutes)</strong>
+    </dt>
+    <dd>
+    Checks whether a buffer is outdated based on the given retirement policy. </p>
+
+<p> This function checks whether the given buffer is outdated based on the given retirement policy. A buffer is considered
+ outdated if it has not been used in the specified number of minutes.
+
+
+    <h3>Parameters:</h3>
     <ul>
-         <li><a href="../modules/lua.buffer-closer.modules.buffer.html#get_retired_bufnrs">get_retired_bufnrs</a></li>
-         <li><a href="../modules/lua.buffer-closer.html#setup">buffer-closer.setup</a></li>
+        <li><span class="parameter">lastused_secs</span>
+         number The timestamp of when the buffer was last used, in seconds.
+        </li>
+        <li><span class="parameter">retirement_minutes</span>
+         number The number of minutes after which a buffer is considered outdated.
+        </li>
     </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean Whether the buffer is outdated.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "is_unsaved_buffer"></a>
+    <strong>is_unsaved_buffer (bufnr)</strong>
+    </dt>
+    <dd>
+    Checks whether a buffer is unsaved. </p>
+
+<p> This function checks whether the given buffer has unsaved changes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bufnr</span>
+         (number): The buffer number to check.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean: Whether the buffer has unsaved changes.
+    </ol>
+
+
 
 
 </dd>
@@ -244,7 +246,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2023-07-26 22:56:19 </i>
+<i style="float:right;">Last updated 2023-07-27 00:15:20 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
