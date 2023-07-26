@@ -14,6 +14,13 @@ local Plugin = {}
 -- @field min_remaining_buffers The minimum number of buffers to keep open.
 -- @field retirement_minutes The number of minutes after which a buffer is considered retired.
 -- @field checking_interval_minutes The interval, in minutes, at which to check for retired buffers.
+--
+-- @field run_when_min_buffers_reached A table of options for running the buffer-closer when the number of buffers is
+-- greater than the given number.
+-- @field run_when_min_buffers_reached.enabled Whether to run the buffer-closer when the number of buffers is greater
+-- than the given number.
+-- @field run_when_min_buffers_reached.min_buffers The number of buffers to reach before running the buffer-closer.
+--
 -- @field excluded A table of excluded filetypes, buffer types, and filenames.
 -- @field excluded.filetypes A table of excluded filetypes.
 -- @field excluded.buftypes A table of excluded buffer types.

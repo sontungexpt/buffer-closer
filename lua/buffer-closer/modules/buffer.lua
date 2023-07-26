@@ -66,9 +66,8 @@ end
 -- options. Buffers that should be excluded based on the exclusion criteria are not included in the returned list.
 --
 -- @param opts table The user options.
--- @see buffer-closer.DEFAULT_OPTS
--- @return table The list of buffer numbers to close.
---
+-- @return table: The list of buffer numbers to close.
+-- @see buffer-closer.setup
 M.get_retired_bufnrs = function(opts)
 	local buffers = vim.fn.getbufinfo { buflisted = 1 }
 	if #buffers <= opts.min_remaining_buffers then return {} end
@@ -103,10 +102,8 @@ end
 -- be excluded based on the exclusion criteria are not closed.
 --
 -- @param opts table The retirement policy options.
--- @see buffer-closer.DEFAULT_OPTS
 -- @see get_retired_bufnrs
--- @return nil
---
+-- @see buffer-closer.setup
 M.close_retired_buffers = function(opts)
 	local retired_bufnrs = M.get_retired_bufnrs(opts)
 

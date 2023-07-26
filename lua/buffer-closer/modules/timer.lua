@@ -14,7 +14,7 @@ local M = {}
 -- options. The timer starts after the specified retirement time and repeats at the specified checking interval.
 --
 -- @param opts table The options for plugin.
--- @see buffer-closer.DEFAULT_OPTS
+-- @see buffer-closer
 -- @see buffer-closer.modules.buffer.close_retired_buffers
 --
 M.init = function(opts)
