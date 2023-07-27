@@ -194,7 +194,7 @@ br {
 
 #content {
   flex: 0 0 77%;
-  padding-left: 30px;
+  padding: 30px;
   border-left: 1px solid var(--separator-color);
 }
 
@@ -314,4 +314,14 @@ br {
 
 #about {
   display: none;
+}
+
+@media (max-width: 1193px) {
+  #navigation {
+    flex: 0 0 100%;
+  }
+
+  #content {
+    flex: 0 0 100%;
+  }
 }
