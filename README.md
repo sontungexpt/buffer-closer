@@ -20,7 +20,6 @@
 -- lazy.nvim
 {
     'sontungexpt/buffer-closer',
-	config = true,
 	event = "VeryLazy",
 },
 ```
