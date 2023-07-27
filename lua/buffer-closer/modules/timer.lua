@@ -1,7 +1,4 @@
---- Timer module
---
--- A module for managing a timer for checking retired buffers.
---
+--- A module for managing a timer for checking retired buffers.
 -- This module provides functions for initializing a timer that checks for retired buffers at regular intervals.
 --
 local buffer_module = require("buffer-closer.modules.buffer")
@@ -18,7 +15,6 @@ local M = {}
 -- @param opts (table): The options for plugin.
 -- @see buffer-closer
 -- @see buffer-closer.modules.buffer.close_retired_buffers
---
 M.init = function(opts)
 	local check_after_minutes = opts.check_after_minutes
 

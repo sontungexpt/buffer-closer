@@ -1,6 +1,4 @@
---- Autocmd module
---
--- This module is responsible for setting up the autocmds for the plugin.
+--- This module is responsible for setting up the autocmds for the plugin.
 --
 local M = {}
 
@@ -15,7 +13,6 @@ local buffer_module = require("buffer-closer.modules.buffer")
 -- @param opts (table): The options for the plugin.
 -- @see buffer-closer.setup
 -- @see buffer-closer.modules.buffer.close_retired_buffers
---
 M.init = function(opts)
 	if not opts.check_when_buffer_adding then return end
 

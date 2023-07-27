@@ -1,8 +1,6 @@
---- option module
---
+---
 -- This module is provides the default options for the plugin and functions to
 -- wok with the options.
---
 --
 local M = {}
 
@@ -30,7 +28,6 @@ local M = {}
 -- @field excluded.buftypes: A table of excluded buffer types.
 -- @field excluded.filenames: A table of excluded filenames.
 -- @field ignore_working_windows: Whether to ignore buffers open in windows.
---
 M.DEFAULT_OPTIONS = {
 	min_remaining_buffers = 2, -- can not be less than 1
 	retirement_minutes = 3, -- can not be less than 1
@@ -75,7 +72,6 @@ M.DEFAULT_OPTIONS = {
 -- @function validate_opts
 -- @param opts (table): The options table to validate.
 -- @return table: The validated options table if the options are valid, otherwise nil.
---
 M.validate_opts = function(opts)
 	local success, error_msg = pcall(function()
 		vim.validate { opts = { opts, "table", true } }
@@ -161,7 +157,6 @@ end
 --
 -- @see DEFAULT_OPTIONS
 -- @see validate_opts
---
 M.apply_user_options = function(user_opts)
 	user_opts = M.validate_opts(user_opts)
 	return vim.tbl_deep_extend("force", M.DEFAULT_OPTIONS, user_opts or {})

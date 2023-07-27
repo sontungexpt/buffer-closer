@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>buffer-closer</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>buffer-closer</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/buffer-closer.html">buffer-closer</a></li>
+  <li><a href="../modules/buffer-closer.modules.autocmd.html">buffer-closer.modules.autocmd</a></li>
+  <li><a href="../modules/buffer-closer.modules.buffer.html">buffer-closer.modules.buffer</a></li>
+  <li><strong>buffer-closer.modules.option</strong></li>
+  <li><a href="../modules/buffer-closer.modules.timer.html">buffer-closer.modules.timer</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>buffer-closer.modules.option</code></h1>
+<p>This module is provides the default options for the plugin and functions to
+ wok with the options.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#apply_user_options">apply_user_options (user_opts)</a></td>
+	<td class="summary">Applies the user options to the default options.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#validate_opts">validate_opts (opts)</a></td>
+	<td class="summary">Validates the plugin options.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></td>
+	<td class="summary">Default options for the <a href="../modules/buffer-closer.html#">buffer-closer</a> plugin.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "apply_user_options"></a>
+    <strong>apply_user_options (user_opts)</strong>
+    </dt>
+    <dd>
+    Applies the user options to the default options. </p>
+
+<p> This function replaces the user options with the default options and returns the resulting options table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">user_opts</span>
+         (table): The user options to apply.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table: The resulting options table.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/buffer-closer.modules.option.html#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></li>
+         <li><a href="../modules/buffer-closer.modules.option.html#validate_opts">validate_opts</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "validate_opts"></a>
+    <strong>validate_opts (opts)</strong>
+    </dt>
+    <dd>
+    Validates the plugin options. </p>
+
+<p> This function validates the given options table against a schema and returns the validated options. If the options
+ are not valid, an error is thrown.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">opts</span>
+         (table): The options table to validate.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table: The validated options table if the options are valid, otherwise nil.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "DEFAULT_OPTIONS"></a>
+    <strong>DEFAULT_OPTIONS</strong>
+    </dt>
+    <dd>
+    Default options for the <a href="../modules/buffer-closer.html#">buffer-closer</a> plugin.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">min_remaining_buffers:</span>
+         The minimum number of buffers to keep open.
+        </li>
+        <li><span class="parameter">retirement_minutes:</span>
+         The number of minutes after which a buffer is considered retired.
+        </li>
+        <li><span class="parameter">check_when_buffer_adding:</span>
+         Whether to check for retired buffers when a new buffer is added.
+        </li>
+        <li><span class="parameter">check_after_minutes:</span>
+         A table of options for automatically checking for retired buffers after a given number of minutes.
+        </li>
+        <li><span class="parameter">run_when_min_buffers_reached:</span>
+         A table of options for running the buffer-closer when the number of buffers is
+ greater than the given number.(not implemented yet)
+        </li>
+        <li><span class="parameter">excluded:</span>
+         A table of excluded filetypes, buffer types, and filenames.
+        </li>
+        <li><span class="parameter">ignore_working_windows:</span>
+         Whether to ignore buffers open in windows.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2023-07-27 20:05:16 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

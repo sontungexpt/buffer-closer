@@ -1,8 +1,6 @@
---- Main module
+--- This module provides functions for setting up and configuring the buffer-closer plugin.
 --
--- This module provides functions for setting up and configuring the buffer-closer plugin.
---
---
+
 local timer_module = require("buffer-closer.modules.timer")
 local option_module = require("buffer-closer.modules.option")
 local autocmd_module = require("buffer-closer.modules.autocmd")
@@ -20,7 +18,6 @@ local Plugin = {}
 -- @see buffer-closer.modules.autocmd.init
 -- @see buffer-closer.modules.timer.init
 -- @see buffer-closer.modules.option.DEFAULT_OPTIONS
---
 Plugin.use_only_one_feature = function(opts)
 	if opts.check_when_buffer_adding then
 		autocmd_module.init(opts)
@@ -40,7 +37,6 @@ end
 -- @see buffer-closer.modules.timer.init
 -- @see buffer-closer.modules.option.apply_user_options
 -- @see use_only_one_feature
---
 Plugin.setup = function(user_opts)
 	local options = option_module.apply_user_options(user_opts)
 	Plugin.use_only_one_feature(options)

@@ -34,14 +34,15 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
-<li><a href="#Tables">Tables</a></li>
 </ul>
 
 
 <h2>Modules</h2>
 <ul class="nowrap">
   <li><strong>buffer-closer</strong></li>
+  <li><a href="../modules/buffer-closer.modules.autocmd.html">buffer-closer.modules.autocmd</a></li>
   <li><a href="../modules/buffer-closer.modules.buffer.html">buffer-closer.modules.buffer</a></li>
+  <li><a href="../modules/buffer-closer.modules.option.html">buffer-closer.modules.option</a></li>
   <li><a href="../modules/buffer-closer.modules.timer.html">buffer-closer.modules.timer</a></li>
 </ul>
 <h2>Topics</h2>
@@ -54,30 +55,21 @@
 <div id="content">
 
 <h1>Module <code>buffer-closer</code></h1>
-<p>The main plugin module</p>
-<p> This module provides functions for setting up and configuring the buffer-closer plugin.</p>
+<p>This module provides functions for setting up and configuring the buffer-closer plugin.</p>
+<p>
+
+</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Plugin.validate_opts">Plugin.validate_opts (opts)</a></td>
-	<td class="summary">Validates the plugin options.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#apply_user_options">apply_user_options (user_opts)</a></td>
-	<td class="summary">Applies the user options to the default options.</td>
-	</tr>
-	<tr>
 	<td class="name" nowrap><a href="#setup">setup (user_opts)</a></td>
 	<td class="summary">Sets up the plugin with the user options.</td>
 	</tr>
-</table>
-<h2><a href="#Tables">Tables</a></h2>
-<table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#DEFAULT_OPTIONS">DEFAULT_OPTIONS</a></td>
-	<td class="summary">Plugin module provides options for the <a href="../modules/buffer-closer.html#">buffer-closer</a> plugin.</td>
+	<td class="name" nowrap><a href="#use_only_one_feature">use_only_one_feature (opts)</a></td>
+	<td class="summary">This function is used to choose which feature to use.</td>
 	</tr>
 </table>
 
@@ -88,65 +80,6 @@
     <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
     <dl class="function">
-    <dt>
-    <a name = "Plugin.validate_opts"></a>
-    <strong>Plugin.validate_opts (opts)</strong>
-    </dt>
-    <dd>
-    Validates the plugin options. </p>
-
-<p> This function validates the given options table against a schema and returns the validated options. If the options
- are not valid, an error is thrown.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">opts</span>
-         (table): The options table to validate.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        table: The validated options table if the options are valid, otherwise nil.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "apply_user_options"></a>
-    <strong>apply_user_options (user_opts)</strong>
-    </dt>
-    <dd>
-    Applies the user options to the default options. </p>
-
-<p> This function replaces the user options with the default options and returns the resulting options table.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">user_opts</span>
-         (table): The user options to apply.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        table: The resulting options table.
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="../modules/buffer-closer.html#DEFAULT_OPTIONS">buffer-closer.DEFAULT_OPTIONS</a>
-    </ul>
-
-
-</dd>
     <dt>
     <a name = "setup"></a>
     <strong>setup (user_opts)</strong>
@@ -168,65 +101,39 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../modules/buffer-closer.modules.timer.html#init">buffer-closer.modules.timer.init</a>
+         <li><a href="../modules/buffer-closer.modules.timer.html#init">buffer-closer.modules.timer.init</a></li>
+         <li><a href="../modules/buffer-closer.modules.option.html#apply_user_options">buffer-closer.modules.option.apply_user_options</a></li>
+         <li><a href="../modules/buffer-closer.html#use_only_one_feature">use_only_one_feature</a></li>
     </ul>
 
 
 </dd>
-</dl>
-    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
-
-    <dl class="function">
     <dt>
-    <a name = "DEFAULT_OPTIONS"></a>
-    <strong>DEFAULT_OPTIONS</strong>
+    <a name = "use_only_one_feature"></a>
+    <strong>use_only_one_feature (opts)</strong>
     </dt>
     <dd>
-    Plugin module provides options for the <a href="../modules/buffer-closer.html#">buffer-closer</a> plugin.
- Default options for the <a href="../modules/buffer-closer.html#">buffer-closer</a> plugin.
+    This function is used to choose which feature to use.
+ If the user opts to check when a buffer is added, then the autocmd module will be used
+ else if opts.check<em>after</em>minutes is enabled the timer module will be used.
+ If both are disabled, then nothing happen
 
 
-    <h3>Fields:</h3>
+    <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">min_remaining_buffers</span>
-         The minimum number of buffers to keep open.
-        </li>
-        <li><span class="parameter">retirement_minutes</span>
-         The number of minutes after which a buffer is considered retired.
-        </li>
-        <li><span class="parameter">checking_interval_minutes</span>
-         The interval, in minutes, at which to check for retired buffers.
-        </li>
-        <li><span class="parameter">run_when_min_buffers_reached</span> A table of options for running the buffer-closer when the number of buffers is
- greater than the given number.(not implemented yet)
-        <ul>
-        <li><span class="parameter">enabled</span>
-         Whether to run the buffer-closer when the number of buffers is greater
- than the given number.(not implemented yet)
-        </li>
-        <li><span class="parameter">min_buffers</span>
-         The number of buffers to reach before running the buffer-closer.(not implemented yet)
-        </li>
-        </li></ul>
-        <li><span class="parameter">excluded</span> A table of excluded filetypes, buffer types, and filenames.
-        <ul>
-        <li><span class="parameter">filetypes</span>
-         A table of excluded filetypes.
-        </li>
-        <li><span class="parameter">buftypes</span>
-         A table of excluded buffer types.
-        </li>
-        <li><span class="parameter">filenames</span>
-         A table of excluded filenames.
-        </li>
-        </li></ul>
-        <li><span class="parameter">ignore_working_windows</span>
-         Whether to ignore buffers open in windows.
+        <li><span class="parameter">opts</span>
+         (table): The user options to apply to the plugin, it will replace the default options.
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/buffer-closer.modules.autocmd.html#init">buffer-closer.modules.autocmd.init</a></li>
+         <li><a href="../modules/buffer-closer.modules.timer.html#init">buffer-closer.modules.timer.init</a></li>
+         <li><a href="../modules/buffer-closer.modules.option.html#DEFAULT_OPTIONS">buffer-closer.modules.option.DEFAULT_OPTIONS</a></li>
+    </ul>
 
 
 </dd>
@@ -237,7 +144,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/LDoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2023-07-27 00:25:12 </i>
+<i style="float:right;">Last updated 2023-07-27 20:05:16 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
