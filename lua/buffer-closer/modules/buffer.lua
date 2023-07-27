@@ -1,4 +1,5 @@
----
+--- Buffer module
+--
 -- A module for managing buffers and closing retired buffers.
 --
 -- This module provides functions for managing buffers and closing retired buffers
@@ -17,6 +18,7 @@ local M = {}
 -- @param bufnr (number): The buffer number to check.
 -- @param excluded (table): The exclusion criteria.
 -- @return boolean: Whether the buffer should be excluded.
+--
 M.is_excluded = function(bufnr, excluded)
 	if excluded then
 		local filetype = get_buf_opt(bufnr, "filetype")
@@ -56,6 +58,7 @@ M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 -- @return boolean Whether the buffer is outdated.
 --
 M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
+	if lastused_secs <= 0 then return false end -- buffer has never been used before (e.g. new buffer)
 	local now = os.time() -- in seconds
 	return now - lastused_secs > retirement_minutes * 60
 end
@@ -71,6 +74,7 @@ end
 -- @param opts (table): The user options.
 -- @return table: The list of buffer numbers to close.
 -- @see buffer-closer.setup
+--
 M.get_retired_bufnrs = function(opts)
 	local buffers = vim.fn.getbufinfo { buflisted = 1 }
 	if #buffers <= opts.min_remaining_buffers then return {} end
@@ -108,18 +112,19 @@ end
 -- @param opts (table): The retirement policy options.
 -- @see get_retired_bufnrs
 -- @see buffer-closer.setup
+--
 M.close_retired_buffers = function(opts)
 	local retired_bufnrs = M.get_retired_bufnrs(opts)
 
 	if #retired_bufnrs > 0 then
+		vim.tbl_map(function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end, retired_bufnrs)
+
 		local has_notify, _ = pcall(require, "notify")
 		if has_notify then
 			vim.notify("buffer-closer: closing retired buffers")
 		else
 			print("buffer-closer: closing retired buffers")
 		end
-
-		vim.tbl_map(function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end, retired_bufnrs)
 	end
 end
 
