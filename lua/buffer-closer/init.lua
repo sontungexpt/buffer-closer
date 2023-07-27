@@ -32,6 +32,8 @@ end
 -- This function sets up the buffer-closer plugin with the given options.
 --
 -- @function setup
+-- @usage `require('buffer-closer').setup({})` (replace `{}` with your `config` table)
+--
 -- @param user_opts (table): The user options to apply to the plugin, it will replace the default options.
 --
 -- @see buffer-closer.modules.timer.init
