@@ -1,3 +1,4 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css");
 @import url("https://mshaugh.github.io/nerdfont-webfonts/build/firacode-nerd-font.css");
@@ -80,7 +81,7 @@ a:hover {
 }
 
 table {
-  border-collapse: collapse; /* Hợp nhất các đường kẻ giữa các ô */
+  border-collapse: collapse;
   border-spacing: 0px;
 }
 
@@ -339,3 +340,4 @@ br {
     flex: 0 0 100%;
   }
 }
+
