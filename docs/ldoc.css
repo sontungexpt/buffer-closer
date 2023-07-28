@@ -72,6 +72,7 @@ ul {
 a {
   color: var(--text-color);
   text-decoration: none;
+  pointer-events: auto
 }
 
 a:hover {
@@ -306,6 +307,19 @@ br {
 #content dd li span {
   color: var(--white-gray-color);
   font-weight: 600;
+}
+
+#content dd li .type {
+  color: var(--yellow-color);
+  font-weight: 600;
+}
+
+#content dd li .type::before {
+  content: "(";
+}
+
+#content dd li .type::after {
+  content: ")";
 }
 
 #content dd li ul {

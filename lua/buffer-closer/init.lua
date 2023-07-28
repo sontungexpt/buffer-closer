@@ -14,16 +14,16 @@ local Plugin = {}
 -- If both are disabled, then nothing happen
 --
 -- @function use_only_one_feature
--- @param opts (table): The user options to apply to the plugin, it will replace the default options.
+-- @tparam table|nil opts : The user options to apply to the plugin, it will replace the default options.
 -- @see buffer-closer.modules.autocmd.init
 -- @see buffer-closer.modules.timer.init
 -- @see buffer-closer.modules.option.DEFAULT_OPTIONS
 Plugin.use_only_one_feature = function(opts)
-	if opts.check_when_buffer_adding then
-		autocmd_module.init(opts)
-	elseif opts.check_after_minutes.enabled then
-		timer_module.init(opts)
-	end
+  if opts.check_when_buffer_adding then
+    autocmd_module.init(opts)
+  elseif opts.check_after_minutes.enabled then
+    timer_module.init(opts)
+  end
 end
 
 ---
@@ -32,16 +32,16 @@ end
 -- This function sets up the buffer-closer plugin with the given options.
 --
 -- @function setup
--- @usage `require('buffer-closer').setup({})` (replace `{}` with your `config` table)
+-- @usage require('buffer-closer').setup({}) (replace `{}` with your `config` table)
 --
--- @param user_opts (table): The user options to apply to the plugin, it will replace the default options.
+-- @tparam table|nil user_opts : The user options to apply to the plugin, it will replace the default options.
 --
 -- @see buffer-closer.modules.timer.init
 -- @see buffer-closer.modules.option.apply_user_options
 -- @see use_only_one_feature
 Plugin.setup = function(user_opts)
-	local options = option_module.apply_user_options(user_opts)
-	Plugin.use_only_one_feature(options)
+  local options = option_module.apply_user_options(user_opts)
+  Plugin.use_only_one_feature(options)
 end
 
 return Plugin
