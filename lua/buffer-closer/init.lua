@@ -19,11 +19,11 @@ local Plugin = {}
 -- @see buffer-closer.modules.timer.init
 -- @see buffer-closer.modules.option.DEFAULT_OPTIONS
 Plugin.use_only_one_feature = function(opts)
-  if opts.check_when_buffer_adding then
-    autocmd_module.init(opts)
-  elseif opts.check_after_minutes.enabled then
-    timer_module.init(opts)
-  end
+	if opts.check_when_buffer_adding then
+		autocmd_module.init(opts)
+	elseif opts.check_after_minutes.enabled then
+		timer_module.init(opts)
+	end
 end
 
 ---
@@ -40,8 +40,8 @@ end
 -- @see buffer-closer.modules.option.apply_user_options
 -- @see use_only_one_feature
 Plugin.setup = function(user_opts)
-  local options = option_module.apply_user_options(user_opts)
-  Plugin.use_only_one_feature(options)
+	local options = option_module.apply_user_options(user_opts)
+	Plugin.use_only_one_feature(options)
 end
 
 return Plugin

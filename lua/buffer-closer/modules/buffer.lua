@@ -16,20 +16,20 @@ local M = {}
 -- @tparam table excluded: The exclusion criteria.
 -- @return boolean: Whether the buffer should be excluded.
 M.is_excluded = function(bufnr, excluded)
-  if excluded then
-    local filetype = get_buf_opt(bufnr, "filetype")
-    local buftype = get_buf_opt(bufnr, "buftype")
-    local filename = vim.fn.expand("%:t")
-    local contains = vim.tbl_contains
-    if
-        contains(excluded.filetypes, filetype)
-        or contains(excluded.buftypes, buftype)
-        or contains(excluded.filenames, filename)
-    then
-      return true
-    end
-  end
-  return false
+	if excluded then
+		local filetype = get_buf_opt(bufnr, "filetype")
+		local buftype = get_buf_opt(bufnr, "buftype")
+		local filename = vim.fn.expand("%:t")
+		local contains = vim.tbl_contains
+		if
+			contains(excluded.filetypes, filetype)
+			or contains(excluded.buftypes, buftype)
+			or contains(excluded.filenames, filename)
+		then
+			return true
+		end
+	end
+	return false
 end
 
 ---
@@ -53,9 +53,9 @@ M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 -- @tparam number retirement_minutes: The number of minutes after which a buffer is considered outdated.
 -- @return boolean: Whether the buffer is outdated.
 M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
-  if lastused_secs <= 0 then return false end -- buffer has never been used before (e.g. new buffer)
-  local now = os.time()                      -- in seconds
-  return now - lastused_secs > retirement_minutes * 60
+	if lastused_secs <= 0 then return false end -- buffer has never been used before (e.g. new buffer)
+	local now = os.time() -- in seconds
+	return now - lastused_secs > retirement_minutes * 60
 end
 
 ---
@@ -70,30 +70,36 @@ end
 -- @return table: The list of buffer numbers to close.
 -- @see buffer-closer.setup
 M.get_retired_bufnrs = function(opts)
-  local buffers = vim.fn.getbufinfo { buflisted = 1 }
-  if #buffers <= opts.min_remaining_buffers then return {} end
+	local buffers = vim.fn.getbufinfo { buflisted = 1 }
+	if #buffers <= opts.min_remaining_buffers then return {} end
 
-  local retired_buffers = vim.tbl_filter(function(buffer)
-    local bufnr = buffer.bufnr
-    return not M.is_unsaved_buffer(bufnr)
-        and M.is_outdated_buffer(buffer.lastused, opts.retirement_minutes)
-        and not (opts.ignore_working_windows and #buffer.windows > 0)
-        and not M.is_excluded(bufnr, opts.excluded)
-  end, buffers)
+	local retired_buffers = vim.tbl_filter(function(buffer)
+		local bufnr = buffer.bufnr
+		return not M.is_unsaved_buffer(bufnr)
+			and M.is_outdated_buffer(buffer.lastused, opts.retirement_minutes)
+			and not (opts.ignore_working_windows and #buffer.windows > 0)
+			and not M.is_excluded(bufnr, opts.excluded)
+	end, buffers)
 
-  local num_after_removing_retired = #buffers - #retired_buffers
-  -- full: 6
-  -- retired: 5
-  -- min_remaining: 4
-  -- num_after_removing_retired: 1
-  --
-  if num_after_removing_retired < opts.min_remaining_buffers then
-    table.sort(retired_buffers, function(a, b) return a.lastused < b.lastused end)
-    retired_buffers =
-        vim.list_slice(retired_buffers, 1, opts.min_remaining_buffers - num_after_removing_retired)
-  end
+	local num_after_removing_retired = #buffers - #retired_buffers
+	-- full: 6
+	-- retired: 5
+	-- min_remaining: 4
+	-- num_after_removing_retired: 1
+	--
+	if num_after_removing_retired < opts.min_remaining_buffers then
+		table.sort(
+			retired_buffers,
+			function(a, b) return a.lastused < b.lastused end
+		)
+		retired_buffers = vim.list_slice(
+			retired_buffers,
+			1,
+			opts.min_remaining_buffers - num_after_removing_retired
+		)
+	end
 
-  return vim.tbl_map(function(buffer) return buffer.bufnr end, retired_buffers)
+	return vim.tbl_map(function(buffer) return buffer.bufnr end, retired_buffers)
 end
 
 ---
@@ -107,18 +113,21 @@ end
 -- @see get_retired_bufnrs
 -- @see buffer-closer.setup
 M.close_retired_buffers = function(opts)
-  local retired_bufnrs = M.get_retired_bufnrs(opts)
+	local retired_bufnrs = M.get_retired_bufnrs(opts)
 
-  if #retired_bufnrs > 0 then
-    vim.tbl_map(function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end, retired_bufnrs)
+	if #retired_bufnrs > 0 then
+		vim.tbl_map(
+			function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end,
+			retired_bufnrs
+		)
 
-    local has_notify, _ = pcall(require, "notify")
-    if has_notify then
-      vim.notify("buffer-closer: closing retired buffers")
-    else
-      print("buffer-closer: closing retired buffers")
-    end
-  end
+		local has_notify, _ = pcall(require, "notify")
+		if has_notify then
+			vim.notify("buffer-closer: closing retired buffers")
+		else
+			print("buffer-closer: closing retired buffers")
+		end
+	end
 end
 
 return M

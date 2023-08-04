@@ -14,13 +14,13 @@ local buffer_module = require("buffer-closer.modules.buffer")
 -- @see buffer-closer.setup
 -- @see buffer-closer.modules.buffer.close_retired_buffers
 M.init = function(opts)
-  if opts.check_when_buffer_adding then
-    autocmd("BufAdd", {
-      group = vim.api.nvim_create_augroup("BufferCloserAutocmd", {}),
-      pattern = "*",
-      callback = function() buffer_module.close_retired_buffers(opts) end,
-    })
-  end
+	if opts.check_when_buffer_adding then
+		autocmd("BufAdd", {
+			group = vim.api.nvim_create_augroup("BufferCloserAutocmd", {}),
+			pattern = "*",
+			callback = function() buffer_module.close_retired_buffers(opts) end,
+		})
+	end
 end
 
 return M
