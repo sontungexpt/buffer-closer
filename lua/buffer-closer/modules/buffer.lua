@@ -88,15 +88,9 @@ M.get_retired_bufnrs = function(opts)
 	-- num_after_removing_retired: 1
 	--
 	if num_after_removing_retired < opts.min_remaining_buffers then
-		table.sort(
-			retired_buffers,
-			function(a, b) return a.lastused < b.lastused end
-		)
-		retired_buffers = vim.list_slice(
-			retired_buffers,
-			1,
-			opts.min_remaining_buffers - num_after_removing_retired
-		)
+		table.sort(retired_buffers, function(a, b) return a.lastused < b.lastused end)
+		retired_buffers =
+			vim.list_slice(retired_buffers, 1, opts.min_remaining_buffers - num_after_removing_retired)
 	end
 
 	return vim.tbl_map(function(buffer) return buffer.bufnr end, retired_buffers)
@@ -116,17 +110,13 @@ M.close_retired_buffers = function(opts)
 	local retired_bufnrs = M.get_retired_bufnrs(opts)
 
 	if #retired_bufnrs > 0 then
-		vim.tbl_map(
-			function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end,
-			retired_bufnrs
-		)
+		vim.tbl_map(function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end, retired_bufnrs)
 
-		local has_notify, _ = pcall(require, "notify")
-		if has_notify then
-			vim.notify("buffer-closer: closing retired buffers")
-		else
-			print("buffer-closer: closing retired buffers")
-		end
+		vim.schedule(
+			function()
+				vim.notify("Close retired buffers", vim.log.levels.INFO, opts or { title = "Buffer Closer" })
+			end
+		)
 	end
 end
 
