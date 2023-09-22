@@ -12,11 +12,10 @@ local validate = vim.validate
 -- @field min_remaining_buffers: The minimum number of buffers to keep open.
 -- @field retirement_minutes: The number of minutes after which a buffer is considered retired.
 --
--- @field check_when_buffer_adding: Whether to check for retired buffers when a new buffer is added.
---
--- @field check_after_minutes: A table of options for automatically checking for retired buffers after a given number of minutes.
--- @field check_after_minutes.enabled: Whether to automatically check for retired buffers after a given number of minutes.
--- @field check_after_minutes.interval_minutes: The number of minutes after which to automatically check for retired buffers.
+-- @field events: A table of events to trigger the buffer-closer.
+-- @field timed_check: A table of options for automatically checking for retired buffers after a given number of minutes.
+-- @field timed_check.enabled: Whether to automatically check for retired buffers after a given number of minutes.
+-- @field timed_check.interval_minutes: The number of minutes after which to automatically check for retired buffers.
 --
 -- @field run_when_min_buffers_reached: A table of options for running the buffer-closer when the number of buffers is
 -- greater than the given number.(not implemented yet)
@@ -33,19 +32,11 @@ M.DEFAULT_OPTIONS = {
 	min_remaining_buffers = 2, -- can not be less than 1
 	retirement_minutes = 3, -- can not be less than 1
 
-	-- feature options
-
-	-- if true then it will check the retired buffers when a new valid buffer is added
-	check_when_buffer_adding = true,
-
-	-- if check_when_buffer_add is true,
-	-- then this option will be off by default
-	check_after_minutes = {
+	events = "default", -- (table, "default", "disabled"): close the buffer when the given events are triggered (see :h autocmd-events)
+	timed_check = {
 		enabled = false,
 		interval_minutes = 1, -- can not be less than 1
 	},
-
-	-- end of feature options
 
 	-- TODO: implement this
 	-- this option will be used to run the buffer-closer when the number of buffers is greater than the given number
@@ -63,6 +54,7 @@ M.DEFAULT_OPTIONS = {
 	-- it means that a buffer will not be closed if it is opened in a window
 	ignore_working_windows = true,
 }
+M.DEFAULT_EVENTS = { "BufAdd", "FocusLost", "FocusGained" }
 
 ---
 --- Validates the plugin options.
@@ -91,8 +83,16 @@ M.validate_opts = function(opts)
 					"Retirement minutes can not be less than 1",
 				},
 
-				check_when_buffer_adding = { opts.check_when_buffer_adding, "boolean", true },
-				check_after_minutes = { opts.check_after_minutes, "table", true },
+				events = {
+					opts.events,
+					function(val)
+						if type(val) == "string" then return val == "default" or val == "disabled" end
+						return val == nil or type(val) == "table"
+					end,
+					"Events can only be `default`, `disabled`, table, or nil",
+				},
+
+				timed_check = { opts.timed_check, "table", true },
 
 				run_when_min_buffers_reached = { opts.run_when_min_buffers_reached, "table", true },
 
@@ -101,14 +101,14 @@ M.validate_opts = function(opts)
 				ignore_working_windows = { opts.ignore_working_windows, "boolean", true },
 			}
 
-			if opts.check_after_minutes then
+			if opts.timed_check then
 				validate {
-					["check_after_minutes.enabled"] = {
-						opts.check_after_minutes.enabled,
+					["timed_check.enabled"] = {
+						opts.timed_check.enabled,
 						"boolean",
 					},
-					["check_after_minutes.interval_minutes"] = {
-						opts.check_after_minutes.interval_minutes,
+					["timed_check.interval_minutes"] = {
+						opts.timed_check.interval_minutes,
 						function(val) return val == nil or type(val) == "number" and val > 0 end,
 						"Auto check interval minutes can not be less than 1",
 					},
