@@ -5,6 +5,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Usage](#usage)
 - [Credits](#credits)
 - [Similar Plugins](#similar-plugins)
 
@@ -47,7 +48,7 @@ require("buffer-closer").setup({
 	-- end of feature options
 
 	excluded = {
-		filetypes = { "lazy", "NvimTree" },
+		filetypes = { "lazy", "NvimTree", "mason" },
 		buftypes = { "terminal", "nofile", "quickfix", "prompt", "help" },
 		filenames = {},
 	},
@@ -56,6 +57,11 @@ require("buffer-closer").setup({
 	ignore_working_windows = true,
 })
 ```
+
+## Usage
+
+- This plugin will automatically close inactive buffers after a period of time in minutes or when the new buffer is adding
+- If you want to close all inactive buffers immediately, you can use `:CloseRetiredBuffer` command
 
 ## Similar Plugins
 
