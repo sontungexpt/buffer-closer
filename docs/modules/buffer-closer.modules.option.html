@@ -244,5 +244,13 @@
     let name = link.getAttribute("name");
     if (parent) parent.setAttribute("id", name);
   });
+</script>
+<script>
+  let links = document.querySelectorAll("a[name]");
+  links.forEach(function(link) {
+    let parent = link.parentElement;
+    let name = link.getAttribute("name");
+    if (parent) parent.setAttribute("id", name);
+  });
 </script></body>
 </html>
