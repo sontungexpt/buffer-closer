@@ -8,12 +8,12 @@ local buffer_module = require("buffer-closer.modules.buffer")
 local option_module = require("buffer-closer.modules.options")
 
 ---
--- This function initializes the autocmds for the plugin, as specified by the given options.
---
--- @function init
--- @tparam table opts : The options for the plugin.
--- @see buffer-closer.setup
--- @see buffer-closer.modules.buffer.close_retired_buffers
+--- This function initializes the autocmds for the plugin, as specified by the given options.
+--- @function setup
+--- @tparam table user_opts : The options for the plugin.
+--- @see buffer-closer.setup
+--- @see buffer-closer.modules.buffer.close_retired_buffers
+--- @see buffer-closer.modules.options.DEFAULT_EVENTS
 M.setup = function(user_opts)
 	local events = user_opts.events
 	if type(events) == "string" then

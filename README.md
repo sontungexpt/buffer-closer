@@ -33,19 +33,16 @@ require("buffer-closer").setup({
 	min_remaining_buffers = 2, -- can not be less than 1
 	retirement_minutes = 3, -- can not be less than 1
 
-	-- feature options
+	-- close the buffer when the given events are triggered (see :h autocmd-events)
+	-- if the value is "default", the plugin will use the default events
+	-- if the value is "disabled", the plugin will not use any events
+	-- if the value is a table, the plugin will use the given events
+	events = "default", -- (table, "default", "disabled"):
 
-	-- if true then it will check the retired buffers when a new valid buffer is added
-	check_when_buffer_adding = true,
-
-	-- if check_when_buffer_add is true,
-	-- then this option will be off by default
-	check_after_minutes = {
+	timed_check = {
 		enabled = false,
 		interval_minutes = 1, -- can not be less than 1
 	},
-
-	-- end of feature options
 
 	excluded = {
 		filetypes = { "lazy", "NvimTree", "mason" },

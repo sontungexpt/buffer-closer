@@ -10,10 +10,11 @@ local M = {}
 ---
 --- This function initializes a timer that checks for retired buffers at regular intervals, as specified by the given
 --- options. The timer starts after the specified retirement time and repeats at the specified checking interval.
----
---- @tparam table opts : The options for plugin.
+--- @function setup
+--- @tparam table user_opts : The options for plugin.
 --- @see buffer-closer
 --- @see buffer-closer.modules.buffer.close_retired_buffers
+--- @see buffer-closer.modules.options.DEFAULT_OPTIONS
 M.setup = function(user_opts)
 	local timed_check = user_opts.timed_check
 

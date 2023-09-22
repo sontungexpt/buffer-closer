@@ -54,6 +54,9 @@ M.DEFAULT_OPTIONS = {
 	-- it means that a buffer will not be closed if it is opened in a window
 	ignore_working_windows = true,
 }
+
+--- Default events for the `buffer-closer` option `events`.
+--- @table DEFAULT_EVENTS
 M.DEFAULT_EVENTS = { "BufAdd", "FocusLost", "FocusGained" }
 
 ---
