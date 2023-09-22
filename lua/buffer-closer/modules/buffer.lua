@@ -6,15 +6,15 @@ local get_buf_opt = vim.api.nvim_buf_get_option
 local M = {}
 
 ---
--- Checks whether a buffer is excluded based on the given exclusion criteria.
---
--- This function checks whether the given buffer should be excluded from being closed based on the given exclusion
--- criteria. The exclusion criteria include filetypes, buffer types, and filenames.
---
--- @function is_excluded
--- @tparam number bufnr : The buffer number to check.
--- @tparam table excluded: The exclusion criteria.
--- @return boolean: Whether the buffer should be excluded.
+--- Checks whether a buffer is excluded based on the given exclusion criteria.
+---
+--- This function checks whether the given buffer should be excluded from being closed based on the given exclusion
+--- criteria. The exclusion criteria include filetypes, buffer types, and filenames.
+---
+--- @function is_excluded
+--- @tparam number bufnr : The buffer number to check.
+--- @tparam table excluded: The exclusion criteria.
+--- @return boolean: Whether the buffer should be excluded.
 M.is_excluded = function(bufnr, excluded)
 	if excluded then
 		local filetype = get_buf_opt(bufnr, "filetype")
@@ -97,15 +97,15 @@ M.get_retired_bufnrs = function(opts)
 end
 
 ---
--- Closes the retired buffers based on the retirement policy specified in the options.
---
--- This function closes the retired buffers based on the retirement policy specified in the options. Buffers that should
--- be excluded based on the exclusion criteria are not closed.
---
--- @function close_retired_buffers
--- @tparam table opts: The retirement policy options.
--- @see get_retired_bufnrs
--- @see buffer-closer.setup
+--- Closes the retired buffers based on the retirement policy specified in the options.
+---
+--- This function closes the retired buffers based on the retirement policy specified in the options. Buffers that should
+--- be excluded based on the exclusion criteria are not closed.
+---
+--- @function close_retired_buffers
+--- @tparam table opts: The retirement policy options.
+--- @see get_retired_bufnrs
+--- @see buffer-closer.setup
 M.close_retired_buffers = function(opts)
 	local retired_bufnrs = M.get_retired_bufnrs(opts)
 

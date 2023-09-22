@@ -64,14 +64,14 @@ M.DEFAULT_OPTIONS = {
 }
 
 ---
--- Validates the plugin options.
---
--- This function validates the given options table against a schema and returns the validated options. If the options
--- are not valid, an error is thrown.
---
--- @function validate_opts
--- @tparam table opts: The options table to validate.
--- @return table: The validated options table if the options are valid, otherwise nil.
+--- Validates the plugin options.
+---
+--- This function validates the given options table against a schema and returns the validated options. If the options
+--- are not valid, an error is thrown.
+---
+--- @function validate_opts
+--- @tparam table opts: The options table to validate.
+--- @return table|nil : The validated options table if the options are valid, otherwise nil.
 M.validate_opts = function(opts)
 	local success, error_msg = pcall(function()
 		vim.validate { opts = { opts, "table", true } }
@@ -147,16 +147,16 @@ M.validate_opts = function(opts)
 end
 
 ---
--- Applies the user options to the default options.
---
--- This function replaces the user options with the default options and returns the resulting options table.
---
--- @function apply_user_options
--- @tparam table user_opts: The user options to apply.
--- @return table: The resulting options table.
---
--- @see DEFAULT_OPTIONS
--- @see validate_opts
+--- Applies the user options to the default options.
+---
+--- This function replaces the user options with the default options and returns the resulting options table.
+---
+--- @function apply_user_options
+--- @tparam table user_opts: The user options to apply.
+--- @return table: The resulting options table.
+---
+--- @see DEFAULT_OPTIONS
+--- @see validate_opts
 M.apply_user_options = function(user_opts)
 	user_opts = M.validate_opts(user_opts)
 	return vim.tbl_deep_extend("force", M.DEFAULT_OPTIONS, user_opts or {})
