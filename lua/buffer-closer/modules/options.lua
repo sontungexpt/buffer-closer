@@ -3,6 +3,7 @@
 -- wok with the options.
 --
 local M = {}
+local validate = vim.validate
 
 ---
 -- Default options for the `buffer-closer` plugin.
@@ -74,10 +75,10 @@ M.DEFAULT_OPTIONS = {
 --- @return table|nil : The validated options table if the options are valid, otherwise nil.
 M.validate_opts = function(opts)
 	local success, error_msg = pcall(function()
-		vim.validate { opts = { opts, "table", true } }
+		validate { opts = { opts, "table", true } }
 
 		if opts then
-			vim.validate {
+			validate {
 				min_remaining_buffers = {
 					opts.min_remaining_buffers,
 					function(val) return val == nil or type(val) == "number" and val > 0 end,
@@ -101,7 +102,7 @@ M.validate_opts = function(opts)
 			}
 
 			if opts.check_after_minutes then
-				vim.validate {
+				validate {
 					["check_after_minutes.enabled"] = {
 						opts.check_after_minutes.enabled,
 						"boolean",
@@ -115,7 +116,7 @@ M.validate_opts = function(opts)
 			end
 
 			if opts.run_when_min_buffers_reached then
-				vim.validate {
+				validate {
 					["run_when_min_buffers_reached.enabled"] = {
 						opts.run_when_min_buffers_reached.enabled,
 						"boolean",
@@ -129,7 +130,7 @@ M.validate_opts = function(opts)
 			end
 
 			if opts.excluded then
-				vim.validate {
+				validate {
 					["excluded.filetypes"] = { opts.excluded.filetypes, "table", true },
 					["excluded.buftypes"] = { opts.excluded.buftypes, "table", true },
 					["excluded.filenames"] = { opts.excluded.filenames, "table", true },

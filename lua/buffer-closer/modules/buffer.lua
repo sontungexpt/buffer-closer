@@ -33,25 +33,25 @@ M.is_excluded = function(bufnr, excluded)
 end
 
 ---
--- Checks whether a buffer is unsaved.
---
--- This function checks whether the given buffer has unsaved changes.
---
--- @function is_unsaved_buffer
--- @tparam number bufnr: The buffer number to check.
--- @return boolean: Whether the buffer has unsaved changes.
+--- Checks whether a buffer is unsaved.
+---
+--- This function checks whether the given buffer has unsaved changes.
+---
+--- @function is_unsaved_buffer
+--- @tparam number bufnr: The buffer number to check.
+--- @return boolean: Whether the buffer has unsaved changes.
 M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 
 ---
--- Checks whether a buffer is outdated based on the given retirement policy.
---
--- This function checks whether the given buffer is outdated based on the given retirement policy. A buffer is considered
--- outdated if it has not been used in the specified number of minutes.
---
--- @function is_outdated_buffer
--- @tparam number lastused_secs: The timestamp of when the buffer was last used, in seconds.
--- @tparam number retirement_minutes: The number of minutes after which a buffer is considered outdated.
--- @return boolean: Whether the buffer is outdated.
+--- Checks whether a buffer is outdated based on the given retirement policy.
+---
+--- This function checks whether the given buffer is outdated based on the given retirement policy. A buffer is considered
+--- outdated if it has not been used in the specified number of minutes.
+---
+--- @function is_outdated_buffer
+--- @tparam number lastused_secs: The timestamp of when the buffer was last used, in seconds.
+--- @tparam number retirement_minutes: The number of minutes after which a buffer is considered outdated.
+--- @return boolean: Whether the buffer is outdated.
 M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
 	if lastused_secs <= 0 then return false end -- buffer has never been used before (e.g. new buffer)
 	local now = os.time() -- in seconds
@@ -59,16 +59,16 @@ M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
 end
 
 ---
--- Returns the list of buffer numbers that should be closed based on the
--- retirement policy specified in the options.
---
--- This function returns the list of buffer numbers that should be closed based on the retirement policy specified in the
--- options. Buffers that should be excluded based on the exclusion criteria are not included in the returned list.
---
--- @function get_retired_bufnrs
--- @tparam table opts: The user options.
--- @return table: The list of buffer numbers to close.
--- @see buffer-closer.setup
+--- Returns the list of buffer numbers that should be closed based on the
+--- retirement policy specified in the options.
+---
+--- This function returns the list of buffer numbers that should be closed based on the retirement policy specified in the
+--- options. Buffers that should be excluded based on the exclusion criteria are not included in the returned list.
+---
+--- @function get_retired_bufnrs
+--- @tparam table opts: The user options.
+--- @return table: The list of buffer numbers to close.
+--- @see buffer-closer.setup
 M.get_retired_bufnrs = function(opts)
 	local buffers = vim.fn.getbufinfo { buflisted = 1 }
 	if #buffers <= opts.min_remaining_buffers then return {} end
@@ -111,6 +111,7 @@ M.close_retired_buffers = function(opts)
 
 	if #retired_bufnrs > 0 then
 		vim.tbl_map(function(bufnr) vim.api.nvim_buf_delete(bufnr, { force = true }) end, retired_bufnrs)
+		vim.api.nvim_command("redrawtabline")
 
 		vim.schedule(
 			function()
