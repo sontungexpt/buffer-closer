@@ -58,7 +58,7 @@ require("buffer-closer").setup({
 ## Usage
 
 - This plugin will automatically close inactive buffers after a period of time in minutes or when the new buffer is adding
-- If you want to close all inactive buffers immediately, you can use `:CloseRetiredBuffer` command
+- If you want to close all inactive buffers immediately, you can use `:BufferCloserRetire` command
 
 ## Similar Plugins
 
