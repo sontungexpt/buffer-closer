@@ -28,7 +28,7 @@ M.setup = function(user_opts)
 		autocmd(events, {
 			group = vim.api.nvim_create_augroup("BufferCloserAutocmd", { clear = true }),
 			pattern = "*",
-			command = "CloseRetiredBuffers",
+			command = "BufferCloserRetire",
 		})
 	end
 end

@@ -5,29 +5,20 @@
 local M = {}
 local validate = vim.validate
 
+--- Default options for the `buffer-closer` plugin.
 ---
--- Default options for the `buffer-closer` plugin.
---
--- @table DEFAULT_OPTIONS
--- @field min_remaining_buffers: The minimum number of buffers to keep open.
--- @field retirement_minutes: The number of minutes after which a buffer is considered retired.
---
--- @field events: A table of events to trigger the buffer-closer.
--- @field timed_check: A table of options for automatically checking for retired buffers after a given number of minutes.
--- @field timed_check.enabled: Whether to automatically check for retired buffers after a given number of minutes.
--- @field timed_check.interval_minutes: The number of minutes after which to automatically check for retired buffers.
---
--- @field run_when_min_buffers_reached: A table of options for running the buffer-closer when the number of buffers is
--- greater than the given number.(not implemented yet)
--- @field run_when_min_buffers_reached.enabled: Whether to run the buffer-closer when the number of buffers is greater
--- than the given number.(not implemented yet)
--- @field run_when_min_buffers_reached.min_buffers: The number of buffers to reach before running the buffer-closer.(not implemented yet)
---
--- @field excluded: A table of excluded filetypes, buffer types, and filenames.
--- @field excluded.filetypes: A table of excluded filetypes.
--- @field excluded.buftypes: A table of excluded buffer types.
--- @field excluded.filenames: A table of excluded filenames.
--- @field ignore_working_windows: Whether to ignore buffers open in windows.
+--- @table DEFAULT_OPTIONS
+--- @tfield number min_remaining_buffers: The minimum number of buffers to keep open.
+--- @tfield number retirement_minutes: The number of minutes after which a buffer is considered retired.
+--- @tfield table events: A table of events to trigger the buffer-closer.
+--- @tfield table timed_check: A table of options for automatically checking for retired buffers after a given number of minutes.
+--- @tfield boolean timed_check.enabled: Whether to automatically check for retired buffers after a given number of minutes.
+--- @tfield number timed_check.interval_minutes: The number of minutes after which to automatically check for retired buffers.
+--- @tfield table excluded: A table of excluded filetypes, buffer types, and filenames.
+--- @tfield table excluded.filetypes: A table of excluded filetypes.
+--- @tfield table excluded.buftypes: A table of excluded buffer types.
+--- @tfield table excluded.filenames: A table of excluded filenames.
+--- @tfield boolean ignore_working_windows: Whether to ignore buffers open in windows.
 M.DEFAULT_OPTIONS = {
 	min_remaining_buffers = 2, -- can not be less than 1
 	retirement_minutes = 3, -- can not be less than 1
@@ -36,13 +27,6 @@ M.DEFAULT_OPTIONS = {
 	timed_check = {
 		enabled = false,
 		interval_minutes = 1, -- can not be less than 1
-	},
-
-	-- TODO: implement this
-	-- this option will be used to run the buffer-closer when the number of buffers is greater than the given number
-	run_when_min_buffers_reached = {
-		enabled = false,
-		min_buffers = 3, -- can not be less than 1
 	},
 
 	excluded = {
@@ -97,8 +81,6 @@ M.validate_opts = function(opts)
 
 				timed_check = { opts.timed_check, "table", true },
 
-				run_when_min_buffers_reached = { opts.run_when_min_buffers_reached, "table", true },
-
 				excluded = { opts.excluded, "table", true },
 
 				ignore_working_windows = { opts.ignore_working_windows, "boolean", true },
@@ -114,20 +96,6 @@ M.validate_opts = function(opts)
 						opts.timed_check.interval_minutes,
 						function(val) return val == nil or type(val) == "number" and val > 0 end,
 						"Auto check interval minutes can not be less than 1",
-					},
-				}
-			end
-
-			if opts.run_when_min_buffers_reached then
-				validate {
-					["run_when_min_buffers_reached.enabled"] = {
-						opts.run_when_min_buffers_reached.enabled,
-						"boolean",
-					},
-					["run_when_min_buffers_reached.min_buffers"] = {
-						opts.run_when_min_buffers_reached.min_buffers,
-						function(val) return val == nil or type(val) == "number" and val > 0 end,
-						"Min buffers can not be less than 1",
 					},
 				}
 			end

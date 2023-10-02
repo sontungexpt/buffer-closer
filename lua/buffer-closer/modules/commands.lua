@@ -13,7 +13,7 @@ local buffer = require("buffer-closer.modules.buffer")
 --- @see buffer-closer.modules.options.DEFAULT_OPTIONS
 --- @see buffer-closer.modules.options.apply_user_options
 M.setup = function(user_opts)
-	new_cmd("CloseRetiredBuffers", function()
+	new_cmd("BufferCloserRetire", function()
 		vim.schedule(function() buffer.close_retired_buffers(user_opts) end)
 	end, { nargs = 0 })
 end
