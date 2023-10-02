@@ -13,8 +13,8 @@ local M = {}
 ---
 --- @function is_excluded
 --- @tparam number bufnr : The buffer number to check.
---- @tparam table excluded: The exclusion criteria.
---- @return boolean: Whether the buffer should be excluded.
+--- @tparam table excluded : The exclusion criteria.
+--- @treturn boolean : Whether the buffer should be excluded.
 M.is_excluded = function(bufnr, excluded)
 	if excluded then
 		local filetype = get_buf_opt(bufnr, "filetype")
@@ -38,8 +38,8 @@ end
 --- This function checks whether the given buffer has unsaved changes.
 ---
 --- @function is_unsaved_buffer
---- @tparam number bufnr: The buffer number to check.
---- @return boolean: Whether the buffer has unsaved changes.
+--- @tparam number bufnr : The buffer number to check.
+--- @treturn boolean : Whether the buffer has unsaved changes.
 M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 
 ---
@@ -49,9 +49,9 @@ M.is_unsaved_buffer = function(bufnr) return get_buf_opt(bufnr, "modified") end
 --- outdated if it has not been used in the specified number of minutes.
 ---
 --- @function is_outdated_buffer
---- @tparam number lastused_secs: The timestamp of when the buffer was last used, in seconds.
---- @tparam number retirement_minutes: The number of minutes after which a buffer is considered outdated.
---- @return boolean: Whether the buffer is outdated.
+--- @tparam number lastused_secs : The timestamp of when the buffer was last used, in seconds.
+--- @tparam number retirement_minutes : The number of minutes after which a buffer is considered outdated.
+--- @treturn boolean : Whether the buffer is outdated.
 M.is_outdated_buffer = function(lastused_secs, retirement_minutes)
 	if lastused_secs <= 0 then return false end -- buffer has never been used before (e.g. new buffer)
 	local now = os.time() -- in seconds
@@ -66,8 +66,8 @@ end
 --- options. Buffers that should be excluded based on the exclusion criteria are not included in the returned list.
 ---
 --- @function get_retired_bufnrs
---- @tparam table opts: The user options.
---- @return table: The list of buffer numbers to close.
+--- @tparam table opts : The user options.
+--- @treturn table : The list of buffer numbers to close.
 --- @see buffer-closer.setup
 M.get_retired_bufnrs = function(opts)
 	local buffers = vim.fn.getbufinfo { buflisted = 1 }
@@ -103,7 +103,7 @@ end
 --- be excluded based on the exclusion criteria are not closed.
 ---
 --- @function close_retired_buffers
---- @tparam table opts: The retirement policy options.
+--- @tparam table opts : The retirement policy options.
 --- @see get_retired_bufnrs
 --- @see buffer-closer.setup
 M.close_retired_buffers = function(opts)
@@ -115,7 +115,11 @@ M.close_retired_buffers = function(opts)
 
 		vim.schedule(
 			function()
-				vim.notify("Close retired buffers", vim.log.levels.INFO, opts or { title = "Buffer Closer" })
+				vim.notify(
+					"Retired buffers are closed",
+					vim.log.levels.INFO,
+					opts or { title = "Buffer Closer" }
+				)
 			end
 		)
 	end

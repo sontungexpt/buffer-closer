@@ -8,17 +8,17 @@ local validate = vim.validate
 --- Default options for the `buffer-closer` plugin.
 ---
 --- @table DEFAULT_OPTIONS
---- @tfield number min_remaining_buffers: The minimum number of buffers to keep open.
---- @tfield number retirement_minutes: The number of minutes after which a buffer is considered retired.
---- @tfield table events: A table of events to trigger the buffer-closer.
---- @tfield table timed_check: A table of options for automatically checking for retired buffers after a given number of minutes.
---- @tfield boolean timed_check.enabled: Whether to automatically check for retired buffers after a given number of minutes.
---- @tfield number timed_check.interval_minutes: The number of minutes after which to automatically check for retired buffers.
---- @tfield table excluded: A table of excluded filetypes, buffer types, and filenames.
---- @tfield table excluded.filetypes: A table of excluded filetypes.
---- @tfield table excluded.buftypes: A table of excluded buffer types.
---- @tfield table excluded.filenames: A table of excluded filenames.
---- @tfield boolean ignore_working_windows: Whether to ignore buffers open in windows.
+--- @tfield number min_remaining_buffers : The minimum number of buffers to keep open.
+--- @tfield number retirement_minutes : The number of minutes after which a buffer is considered retired.
+--- @tfield table events : A table of events to trigger the buffer-closer.
+--- @tfield table timed_check : A table of options for automatically checking for retired buffers after a given number of minutes.
+--- @tfield boolean timed_check.enabled : Whether to automatically check for retired buffers after a given number of minutes.
+--- @tfield number timed_check.interval_minutes : The number of minutes after which to automatically check for retired buffers.
+--- @tfield table excluded : A table of excluded filetypes, buffer types, and filenames.
+--- @tfield table excluded.filetypes : A table of excluded filetypes.
+--- @tfield table excluded.buftypes : A table of excluded buffer types.
+--- @tfield table excluded.filenames : A table of excluded filenames.
+--- @tfield boolean ignore_working_windows : Whether to ignore buffers open in windows.
 M.DEFAULT_OPTIONS = {
 	min_remaining_buffers = 2, -- can not be less than 1
 	retirement_minutes = 3, -- can not be less than 1
@@ -51,7 +51,7 @@ M.DEFAULT_EVENTS = { "BufAdd", "FocusLost", "FocusGained" }
 ---
 --- @function validate_opts
 --- @tparam table opts: The options table to validate.
---- @return table|nil : The validated options table if the options are valid, otherwise nil.
+--- @treturn table|nil : The validated options table if the options are valid, otherwise nil.
 M.validate_opts = function(opts)
 	local success, error_msg = pcall(function()
 		validate { opts = { opts, "table", true } }
@@ -124,8 +124,8 @@ end
 --- This function replaces the user options with the default options and returns the resulting options table.
 ---
 --- @function apply_user_options
---- @tparam table user_opts: The user options to apply.
---- @return table: The resulting options table.
+--- @tparam table user_opts : The user options to apply.
+--- @treturn table : The resulting options table.
 ---
 --- @see DEFAULT_OPTIONS
 --- @see validate_opts
